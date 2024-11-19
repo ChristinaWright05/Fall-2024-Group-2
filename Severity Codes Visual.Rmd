@@ -1,0 +1,67 @@
+---
+title: "Severity Codes Visual"
+author: "Ryan Kantor"
+date: "2024-11-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+library(ggplot2)
+library(readr)
+library(tidyverse)
+
+```
+
+```{r}
+
+data <- read_csv("C:/Users/ryana/Downloads/MBTA_Service_Alerts.csv")
+
+```
+
+```{r}
+
+# Find the 5 most frequent effect types
+top_effects <- data %>%
+  count(effect_name) %>%
+  top_n(5, wt = n) %>%
+  pull(effect_name)
+
+```
+
+```{r}
+
+# Calculate the average severity code for all top 5 effects
+top_effects_data <- subset(data, effect_name %in% top_effects)
+
+# Group and calculate the average severity code
+library(dplyr)
+average_severity <- top_effects_data %>%
+  group_by(effect_name) %>%
+  summarise(average_severity = mean(severity_code, na.rm = TRUE))
+
+print(average_severity)
+
+```
+
+```{r}
+
+# Data for visualization
+effect_data <- data.frame(
+  Effect_Name = c("Detour", "Delay", "Escalator Closure", "Elevator Closure", "Track Change"),
+  Severity_Code = c(6.33, 4.97, 2.99, 2.97, 1.65)
+)
+
+# Create the bar chart
+ggplot(effect_data, aes(x = reorder(Effect_Name, -Severity_Code), y = Severity_Code, fill = Effect_Name)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Top 5 Effect Names and Their Severity Code",
+       x = "Effect Name",
+       y = "Average Severity Code") +
+  theme_minimal()
+
+```
