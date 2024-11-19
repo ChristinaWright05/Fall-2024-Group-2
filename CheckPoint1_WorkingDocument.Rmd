@@ -1,0 +1,167 @@
+---
+title: "Fall 2024 Project - Group 2 Working Document"
+author: "Brian, Angelo, Ryan, & Christina"
+date: "Fall 2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE) # set this so that warnings do not print along with our output
+```
+
+```{r, warning = FALSE}
+# first load libraries
+library(readr)
+library(dplyr)
+library(psych)
+library(ggplot2)
+library(lubridate)
+```
+
+## Datasets
+
+Our analysis uses publically available data from the MBTA's Blue Book Open Data Portal (https://mbta-massdot.opendata.arcgis.com). First, we will look at the ridership data - specifically the MBTA historical gate station entries (https://mbta-massdot.opendata.arcgis.com/datasets/7859894afb5641ce91a2bb03599fdf5b/about). Then, we will analyze this against the service alerts (https://mbta-massdot.opendata.arcgis.com/datasets/90ed9092bd7a4285b296d5ff938edf29_0/explore). 
+
+The goal of this analysis will be to find the most impactful service alerts, whether that be type of service issue, particular line of the issue, or circumstances around the issues (i.e. were these unexpected or planned service delays/outages). From there we can provide recommendations to the MBTA on where to focus in the coming year.
+
+## Dataset 1: Ridership Data
+
+```{r}
+
+# upload each file by year - change paths as applicable
+file_2023 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2023.csv"
+file_2022 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2022.csv"  # Update this path
+file_2021 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2021.csv"  # Update this path
+
+# import the data
+data_2023 <- read_csv(file_2023, show_col_types = FALSE)
+data_2022 <- read_csv(file_2022, show_col_types = FALSE)
+data_2021 <- read_csv(file_2021, show_col_types = FALSE)
+
+# add a column to each dataset for the corresponding year
+data_2023 <- data_2023 %>% mutate(Year = 2023)
+data_2022 <- data_2022 %>% mutate(Year = 2022)
+data_2021 <- data_2024 %>% mutate(Year = 2021)
+
+# combine
+Ridership_3yeardata <- bind_rows(data_2021, data_2022, data_2023)
+```
+
+```{r}
+# preview the first 10 rows of the dataset
+head(Ridership_3yeardata, 10)
+```
+
+```{r, warning=FALSE}
+# Summary statistics 
+summary_stats <- describe(Ridership_3yeardata)
+# only stats I want to print
+summary_stats <- summary_stats[, c("n", "mean", "sd" ,"max", "min")]
+print(summary_stats)
+```
+
+```{r}
+Ridership_3yeardata <- Ridership_3yeardata %>%
+  mutate(service_date = as.Date(service_date),
+         gated_entries = ifelse(gated_entries < 0, NA, gated_entries))  # Replace negative entries with NA
+```
+
+```{r}
+Ridership_3yeardata <- Ridership_3yeardata %>%
+  mutate(service_date = as.Date(service_date),  # Convert notif_start to Date
+         month = floor_date(service_date, "month"),
+         year = floor_date(service_date, "year") )  # Extract month for aggregation
+```
+
+
+
+### Dataset 2: Service Alert Data
+```{r}
+# change path when downloaded
+service_alerts <- read_csv('/Users/christinawright/Documents/Fall 2024 Datasets/MBTA_Service_Alerts.csv', show_col_types = FALSE)
+
+# preview the first 10 rows of the dataset
+head(service_alerts, 10)
+```
+
+```{r}
+service_alerts <- service_alerts %>%
+  mutate(notif_start = as.Date(notif_start),  # Convert notif_start to Date
+         month = floor_date(notif_start, "month"),
+         year = floor_date(notif_start, "year") )  # Extract month for aggregation
+```
+
+
+```{r}
+summary_stats <- describe(service_alerts)
+# only stats I want to print
+summary_stats <- summary_stats[, c("n", "mean", "sd" ,"max", "min")]
+print(summary_stats)
+```
+
+### Merging the two datasets: service alerts by subway line, along with ridership data
+
+Create a column with only the color of the line in the ridership data
+```{r}
+# Extract the color before "line"
+Ridership_3yeardata$SubwayLine <- toupper(sub(" Line", "", Ridership_3yeardata$route_or_line))
+```
+
+Filter to subway alerts only and create 4 new columns with flags for whether or not the alert message pertains to each line
+```{r}
+filtered_service_alerts <- service_alerts %>%
+  filter(gui_mode_name == "Subway" & year(service_alerts$notif_start) %in% c(2021,2022, 2023))
+
+# Add a column for each color with boolean 1 or 0 based on whether the description contains the color and "experiencing"
+filtered_service_alerts$IsGreenLine <- ifelse(filtered_service_alerts$color == '00843D', 1, 0)
+filtered_service_alerts$IsRedLine <- ifelse(filtered_service_alerts$color == 'DA291C', 1, 0)
+filtered_service_alerts$IsBlueLine <- ifelse(filtered_service_alerts$color == '003DA5', 1, 0)
+filtered_service_alerts$IsOrangeLine <- ifelse(filtered_service_alerts$color == 'ED8B00', 1, 0)
+filtered_service_alerts$year = year(filtered_service_alerts$notif_start)
+filtered_service_alerts$month = month(filtered_service_alerts$notif_start)
+```
+
+Aggregate the alert frequencies and serverity of alert by T line, for each month / year
+```{r}
+aggregated_service_alerts <- filtered_service_alerts %>%
+  mutate(SubwayLine = case_when(
+    IsGreenLine == 1 ~ "GREEN",
+    IsRedLine == 1 ~ "RED",
+    IsBlueLine == 1 ~ "BLUE",
+    IsOrangeLine == 1 ~ "ORANGE",
+    TRUE ~ NA_character_ # If none of the conditions match
+  )) %>%
+  group_by(year, month, SubwayLine) %>%
+  summarise(
+    distinct_alert_count = n_distinct(alert_id),  # Count distinct alert_ids
+    avg_severity = mean(severity_code, na.rm = TRUE),  # Calculate average severity
+    .groups = "drop"
+  )
+```
+
+Aggregate the ridership data on the same level
+```{r}
+# Aggregate by year, month, and color, summing the gated_entries
+aggregated_Ridership_data <- Ridership_3yeardata %>%
+  group_by(Year, month, SubwayLine) %>%
+  summarise(
+    total_gated_entries = sum(gated_entries, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+aggregated_Ridership_data$month = month(aggregated_Ridership_data$month)
+aggregated_Ridership_data$year = (aggregated_Ridership_data$Year)
+```
+
+Join the two aggregated data sets
+```{r}
+Alerts_Ridership_BySubwayLine <- inner_join(aggregated_Ridership_data, aggregated_service_alerts, 
+                         by = c("year", "month", "SubwayLine"))
+
+# preview the first 10 rows of the dataset
+# Drop the duplicate 'Year' column
+Alerts_Ridership_BySubwayLine <- Alerts_Ridership_BySubwayLine %>%
+  select(-Year)
+head(Alerts_Ridership_BySubwayLine, 10)
+```
+
