@@ -165,3 +165,108 @@ Alerts_Ridership_BySubwayLine <- Alerts_Ridership_BySubwayLine %>%
 head(Alerts_Ridership_BySubwayLine, 10)
 ```
 
+### Exploratory Data Analysis for Ridership Data
+
+
+### Exploratory Data Analysis for Service Alerts Data
+
+
+```{r} 
+# Find the 5 most frequent effect types
+top_effects <- service_alerts %>%
+  count(effect_name) %>%
+  top_n(5, wt = n) %>%
+  pull(effect_name)
+
+# Calculate the average severity code for all top 5 effects
+top_effects_data <- subset(service_alerts, effect_name %in% top_effects)
+
+# Group and calculate the average severity code
+average_severity <- top_effects_data %>%
+  group_by(effect_name) %>%
+  summarise(average_severity = mean(severity_code, na.rm = TRUE))
+
+print(average_severity)
+```
+
+Visualizing this data
+```{r}
+# Data for visualization
+effect_data <- data.frame(
+  Effect_Name = c("Detour", "Delay", "Escalator Closure", "Elevator Closure", "Track Change"),
+  Severity_Code = c(6.33, 4.97, 2.99, 2.97, 1.65)
+)
+
+# Create the bar chart
+ggplot(effect_data, aes(x = reorder(Effect_Name, -Severity_Code), y = Severity_Code, fill = Effect_Name)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Top 5 Effect Names and Their Severity Code",
+       x = "Effect Name",
+       y = "Average Severity Code") +
+  theme_minimal()
+```
+
+This next chart shows that Delay alerts are by far the most frequent, 
+making them a key area for the MBTA to address. The high frequency of delays 
+suggests that focusing on reducing these disruptions could significantly 
+improve rider experience. Other alerts like Detour, Elevator Closure,
+and Track Change, though less frequent, also impact riders, particularly 
+in accessibility and route consistency. To optimize service, MBTA could analyze
+these alerts by line or station, differentiate between planned and unplanned 
+disruptions, and prioritize maintenance to prevent unexpected outages. For the
+coming year, targeted efforts on reducing delays, enhancing communication, and
+ensuring accessibility would likely yield the most positive impacts for riders.
+
+```{r}
+service_alerts <- service_alerts %>%
+  mutate(notif_start = as.Date(notif_start),  # Convert notif_start to Date
+         month = floor_date(notif_start, "month"))  # Extract month for aggregation
+
+# Top Alert Frequency
+top_alert_types <- service_alerts %>%
+  count(effect_name) %>%
+  arrange(desc(n)) %>%
+  slice(1:5) %>%
+  pull(effect_name)
+
+# Only Top Alerts
+filtered_alerts <- service_alerts %>%
+  filter(effect_name %in% top_alert_types)
+
+# Top Alert Count
+monthly_alerts <- filtered_alerts %>%
+  group_by(month, effect_name) %>%
+  summarise(alert_count = n(), .groups = "drop")
+
+# PAST 3 Years
+start_date <- as.Date("2021-01-01")
+monthly_alerts <- monthly_alerts %>% filter(month >= start_date)
+
+#VIZ
+ggplot(monthly_alerts, aes(x = month, y = alert_count, fill = effect_name)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Monthly Frequency of All Top Alert Types (Last 3 Years)",
+       x = "Month",
+       y = "Alert Frequency",
+       fill = "Alert Type") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+```{r}
+severity_type <- unique(service_alerts$alert_time_type)
+
+severity_counts <- service_alerts %>%
+  count(alert_time_type, name = "frequency")
+
+
+ggplot(severity_counts, aes(x = severity_type, y = frequency,  fill= severity_type))+
+  geom_bar(stat = "Identity", fill = "skyblue", color = "white") +
+  labs( title = "Count of Alert Time Type 2023", x = "Alter Time Type", y = "Count")+
+  scale_y_continuous(labels = scales::label_number()) +
+  theme_minimal()
+
+```
+
+### Exploratory Data Analysis for the Merged Dataset with both Ridership & Service Alerts
+
