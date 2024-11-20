@@ -1,0 +1,65 @@
+---
+title: "Alerts"
+output: pdf_document
+date: "2024-11-20"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load necessary libraries
+```{r}
+library(dplyr)
+library(ggplot2)
+
+titanic_data <- read.csv("~/Desktop/School/Data Analysis/Assignments/train.csv")  
+```
+
+#Overall survival Rate
+```{r}
+total_survived <- sum(titanic_data$Survived)
+total_population <- nrow(titanic_data)
+overall_survival_rate <- total_survived / total_population
+overall_survival_rate
+```
+#.3838384 Overall Sruvival Rate
+
+#female survival rate
+```{r}
+female_data <- filter(titanic_data, Sex == "female")
+female_survived <- sum(female_data$Survived)
+total_females <- nrow(female_data)
+female_survival_rate <- female_survived / total_females
+female_survival_rate
+```
+#.7420382 Female Survival rate
+
+# Hypothesis: Is the female survival rate is higher than the overall survival rate
+```{r}
+result <- prop.test(female_survived, total_females, p = overall_survival_rate, conf.level = 0.95)
+result
+```
+The test statistic is 168.84, the value highlights a substantial deviation of the female survival rate from overall rate.
+THe P-Value is < 2.2e-16, which is far below the .05 significance level.
+Our confidence level is between .6978206 and .78877
+Our results suggest that the female survival rate is significantly higher than the overall rate.
+We reject the null hypothesis, as there is strong evidence pointing towards the idea that the female survival rate is much higher than the overall rate.
+
+#Graph
+```{r}
+Graph<- ggplot() +
+  geom_point(aes(x = 1, y = female_survival_rate), color = "blue", size = 3) +
+  geom_errorbar(aes(x = 1, ymin = result$conf.int[1], ymax = result$conf.int[2]), width = 0.1, color = "blue") +
+  geom_hline(aes(yintercept = overall_survival_rate), color = "red", linetype = "dashed") +
+  xlim(0.5, 1.5) +
+  ylim(0, 1) +
+  
+  labs(title = "Comparison of Female and Overall Survival Rates", y = "Survival Rate", x = "") 
+Graph
+```
+
+
+```{r Graph, echo=FALSE}
+plot(Graph)
+```
