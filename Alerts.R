@@ -11,11 +11,11 @@ ridership <- bind_rows(ridership_2023, ridership_2024)
 
 ridership <- ridership %>%
   mutate(service_date = as.Date(service_date),
-         gated_entries = ifelse(gated_entries < 0, NA, gated_entries))  # Replace negative entries with NA
+         gated_entries = ifelse(gated_entries < 0, NA, gated_entries)) 
 
 service_alerts <- service_alerts %>%
-  mutate(notif_start = as.Date(notif_start),  # Convert notif_start to Date
-         month = floor_date(notif_start, "month"))  # Extract month for aggregation
+  mutate(notif_start = as.Date(notif_start), 
+         month = floor_date(notif_start, "month"))  
 
 # Top Alert Frequency
 top_alert_types <- service_alerts %>%
