@@ -176,6 +176,52 @@ head(Alerts_Ridership_BySubwayLine, 10)
 
 ### Exploratory Data Analysis for Ridership Data
 
+Looking at ridership data by MBTA T line, we can see the red line has lead in gated entries, followed by the orange, green, blue, then silver. The mattapan line is likely a misclassification of the red or orange lines, but we will investigate that further.
+```{r}
+# aggregate the data bythe T line variable, route_or_line
+T_line_ridership <- Ridership_3yeardata %>%
+  group_by(route_or_line) %>%
+  summarize(total_gateentries = sum(gated_entries, na.rm = TRUE))
+
+# plot the sum of entries by T line
+ggplot(T_line_ridership, aes(x = reorder(route_or_line, -total_gateentries), y = total_gateentries, fill = route_or_line)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Total Ridership by MBTA T Line",
+    x = "T Line",
+    y = "Total Gated Entries"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+We can also see how ridership may have changed over time
+```{r}
+# adding in a 'month' column based off the service_date
+Ridership_3yeardata <- Ridership_3yeardata %>%
+  mutate(month = floor_date(service_date, "month")) 
+
+# agreagte the data by month
+monthly_ridership <- Ridership_3yeardata %>%
+  group_by(month) %>%
+  summarize(total_gateentries = sum(gated_entries, na.rm = TRUE))
+
+# plotting the total ridership over time by month
+ggplot(monthly_ridership, aes(x = month, y = total_gateentries)) +
+  geom_line(color = "blue", size = 1) +
+  scale_x_date(
+    date_labels = "%b %Y",  # month year x-axis labels
+    date_breaks = "1 month" # adding month grid lines for readability
+  ) +
+  labs(
+    title = "Monthly Total Ridership Over Time",
+    x = "Month",
+    y = "Total Gated Entries"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+```
 
 ### Exploratory Data Analysis for Service Alerts Data
 
