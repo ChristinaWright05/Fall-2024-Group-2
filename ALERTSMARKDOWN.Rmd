@@ -20,7 +20,7 @@ ridership_2024 <- read_csv("~/Desktop/School/Software tools for Data Analysis/Pr
 service_alerts <- read_csv("~/Desktop/School/Software tools for Data Analysis/Project/MBTA_Service_Alerts.csv") 
 ```
 
-
+Below, I am combining the ridership data between 2023 and 2024. I am also converting notif_start into a date format.
 ```{r}
 ridership <- bind_rows(ridership_2023, ridership_2024)
 
@@ -34,7 +34,7 @@ service_alerts <- service_alerts %>%
 
 ```
 
-# Top Alert Frequency
+Here, I am identifying the top five most frequent alert types.
 ```{r}
 top_alert_types <- service_alerts %>%
   count(effect_name) %>%
@@ -43,26 +43,26 @@ top_alert_types <- service_alerts %>%
   pull(effect_name)
 ```
 
-# Only Top Alerts
+After identifying the top alerts, I am now filtering the data set to only include them.
 ```{r}
 filtered_alerts <- service_alerts %>%
   filter(effect_name %in% top_alert_types)
 ```
 
-# Top Alert Count
+Now I can count the number of alerts per group.
 ```{r}
 monthly_alerts <- filtered_alerts %>%
   group_by(month, effect_name) %>%
   summarise(alert_count = n(), .groups = "drop")
 ```
 
-# PAST 3 Years
+Here I am restricitng the dataset to only include January 1,2021 and later.
 ```{r}
 start_date <- as.Date("2021-01-01")
 monthly_alerts <- monthly_alerts %>% filter(month >= start_date)
 ```
 
-#Visulization
+A stacked bar chart showing the monthly frequency of the top 5 alerts.
 ```{r}
 graph<- ggplot(monthly_alerts, aes(x = month, y = alert_count, fill = effect_name)) +
   geom_bar(stat = "identity", position = "stack") +
@@ -74,6 +74,11 @@ graph<- ggplot(monthly_alerts, aes(x = month, y = alert_count, fill = effect_nam
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 graph
 ```
+
+This chart shows that Delay alerts are by far the most frequent, 
+making them a key area for the MBTA to address. The high frequency of delays suggests that focusing on reducing these disruptions could significantly improve rider experience. Other alerts like Detour, Elevator Closure,and Track Change, though less frequent, also impact riders, particularly in accessibility and route consistency. To optimize service, MBTA could analyze these alerts by line or station, differentiate between planned and unplanned disruptions, and prioritize maintenance to prevent unexpected outages. For the
+coming year, targeted efforts on reducing delays, enhancing communication, and ensuring accessibility would likely yield the most positive impacts for riders.
+
 
 
 ```{r graph, echo=FALSE}
