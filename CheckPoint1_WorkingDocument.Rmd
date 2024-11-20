@@ -18,7 +18,9 @@ library(ggplot2)
 library(lubridate)
 ```
 
-## Datasets
+Our goals for checkpoint 1 include (1) select the data sets from the MBTA's official data portal, (2) Clean and merge these datasets, and (3) conduct some exploratory data analysis on each of the data sets separately, as well as on the merged set.
+
+## Introduction to our Datasets
 
 Our analysis uses publically available data from the MBTA's Blue Book Open Data Portal (https://mbta-massdot.opendata.arcgis.com). First, we will look at the ridership data - specifically the MBTA historical gate station entries (https://mbta-massdot.opendata.arcgis.com/datasets/7859894afb5641ce91a2bb03599fdf5b/about). Then, we will analyze this against the service alerts (https://mbta-massdot.opendata.arcgis.com/datasets/90ed9092bd7a4285b296d5ff938edf29_0/explore). 
 
@@ -26,12 +28,14 @@ The goal of this analysis will be to find the most impactful service alerts, whe
 
 ## Dataset 1: Ridership Data
 
+For the purpose of our initial analysis, we have looked at 3 years of recent ridership data. This data includes the number of gated entries at each MBTA T station by every half hour. Variables in this dataset include the date and timestamp, a stop_id identifying the unique MBTA T stop, station_name, route_or_line telling us which T line this was on, and the count of gated entries in that given half hour time period.
+
 ```{r}
 
 # upload each file by year - change paths as applicable
 file_2023 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2023.csv"
-file_2022 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2022.csv"  # Update this path
-file_2021 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2021.csv"  # Update this path
+file_2022 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2022.csv"  # Update this path to where you have saved the file
+file_2021 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2021.csv"  # Update this path to where you have saved the file
 
 # import the data
 data_2023 <- read_csv(file_2023, show_col_types = FALSE)
@@ -76,8 +80,11 @@ Ridership_3yeardata <- Ridership_3yeardata %>%
 
 
 ### Dataset 2: Service Alert Data
+
+Within our Service Alerts dataset, we have alert level data from the last 5 years. For the purpose of our analysis, we will likely filter this down to the last ~3 years, to match the time-span of our ridership data. Variables within this data set include the type of transportation (gui_mode_name), the type of alert (alert_type_name), the type of alert (effect_name), the cause of the effect (cause_name), the severity of the alert (severity_name & severity_code), some description / context behind the alert (header & description), and then corresponding timestamps for when the alerts start or end.
+
 ```{r}
-# change path when downloaded
+# change path when downloaded to the location of the dataset
 service_alerts <- read_csv('/Users/christinawright/Documents/Fall 2024 Datasets/MBTA_Service_Alerts.csv', show_col_types = FALSE)
 
 # preview the first 10 rows of the dataset
@@ -100,6 +107,8 @@ print(summary_stats)
 ```
 
 ### Merging the two datasets: service alerts by subway line, along with ridership data
+
+To ultimately be able to conduct an analysis on the relationship between service alerts and ridership, we will need the datasets to be merged into one clean and easy to use dataframe. To do so, we filter the sets to the same time periods, and join them on the T line and month-year level.
 
 Create a column with only the color of the line in the ridership data
 ```{r}
@@ -169,6 +178,8 @@ head(Alerts_Ridership_BySubwayLine, 10)
 
 
 ### Exploratory Data Analysis for Service Alerts Data
+
+Within this section, we have plotted frequency of alerts of alert type, along with the severity of these alerts, and the duration of them.
 
 
 ```{r} 
