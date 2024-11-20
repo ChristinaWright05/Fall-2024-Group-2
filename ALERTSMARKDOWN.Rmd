@@ -76,6 +76,6 @@ graph
 ```
 
 
-```{r Graph, echo=FALSE}
+```{r graph, echo=FALSE}
 plot(graph)
 ```
