@@ -2,6 +2,11 @@ https://public.tableau.com/views/LocationTimeAnalysis/Dashboard1?:language=en-US
 
 Above I have pasted the link to my dashboard via Tableau Public.
 
+Understanding patterns in service alerts is essential for identifying areas of improvement in transit operations. 
+These visualizations provide valuable insights into when, where, and why alerts occur, enabling transit authorities to prioritize resources effectively. 
+By examining the frequency of alerts across different times of the day, locations, and causes, we can see trends that impact reliability 
+and overall passenger experience.
+
 These visualizations focus on the distribution of alerts by time of day, location, and primary causes. 
 The bar chart highlights that alert frequency peaks during commuting hours, with the highest counts observed between 7–9 AM and 4–6 PM, suggesting a strong correlation with rush hour traffic.
 The treemap identifies the most affected locations, with delays most frequently reported on the Newburyport/Rockport, Fitchburg, and Framingham/Worcester lines. 
