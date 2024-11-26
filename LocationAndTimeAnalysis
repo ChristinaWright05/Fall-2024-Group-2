@@ -1,0 +1,9 @@
+https://public.tableau.com/views/LocationTimeAnalysis/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
+
+Above I have pasted the link to my dashboard via Tableau Public.
+
+These visualizations focus on the distribution of alerts by time of day, location, and primary causes. 
+The bar chart highlights that alert frequency peaks during commuting hours, with the highest counts observed between 7–9 AM and 4–6 PM, suggesting a strong correlation with rush hour traffic.
+The treemap identifies the most affected locations, with delays most frequently reported on the Newburyport/Rockport, Fitchburg, and Framingham/Worcester lines. 
+Lastly, the table categorizes the major causes of alerts, showing that "Unknown Causes" and "Technical Problems" dominate delays, while "Construction" significantly impacts detours. 
+This analysis helps to highlight the importance of addressing infrastructure and operational challenges to improve service reliability during peak hours and on critical transit lines.
