@@ -35,10 +35,10 @@ For the purpose of our initial analysis, we have looked at 3 years of recent rid
 ```{r}
 
 # upload each file by year - change paths as applicable
-file_2024 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2024.csv"
-file_2023 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2023.csv"
-file_2022 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2022.csv"  # Update this path to where you have saved the file
-file_2021 <- "/Users/christinawright/Documents/Fall 2024 Datasets/GSE_by_year/GSE_2021.csv"  # Update this path to where you have saved the file
+file_2024 <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/GSE_by_year/GSE_2024.csv"
+file_2023 <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/GSE_by_year/GSE_2023.csv"
+file_2022 <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/GSE_by_year/GSE_2022.csv"  # Update this path to where you have saved the file
+file_2021 <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/GSE_by_year/GSE_2021.csv"  # Update this path to where you have saved the file
 
 # import the data
 data_2024 <- read_csv(file_2024, show_col_types = FALSE)
@@ -53,7 +53,7 @@ data_2022 <- data_2022 %>% mutate(Year = 2022)
 data_2021 <- data_2021 %>% mutate(Year = 2021)
 
 # combine
-Ridership_yeardata_30minutes <- bind_rows(data_2021, data_2022, data_2023, data_2024)
+Ridership_3yeardata <- bind_rows(data_2021, data_2022, data_2023, data_2024)
 ```
 
 ```{r}
@@ -88,7 +88,8 @@ Within our Service Alerts dataset, we have alert level data from the last 5 year
 
 ```{r}
 # change path when downloaded to the location of the dataset
-service_alerts <- read_csv('/Users/christinawright/Documents/Fall 2024 Datasets/MBTA_Service_Alerts.csv', show_col_types = FALSE)
+service_alerts <- read_csv("C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/MBTA_Service_Alerts.csv"
+, show_col_types = FALSE)
 
 # preview the first 10 rows of the dataset
 head(service_alerts, 10)
@@ -180,19 +181,19 @@ head(Alerts_Ridership_BySubwayLine, 10)
 Export all 3 datasets to new csvs that can be used in Tableau or viewed on github
 ```{r}
 # file path to save CSV
-output_file <- "/Users/christinawright/Documents/Fall 2024 Datasets/Alerts_Ridership_BySubwayLine.csv"
+output_file <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/datasets/Alerts_Ridership_BySubwayLine.csv"
 
 # export to CSV
 write.csv(Alerts_Ridership_BySubwayLine, file = output_file, row.names = FALSE)
 
 # same for monthly ridership data
-output_file <- "/Users/christinawright/Documents/Fall 2024 Datasets/Monthly_Ridership.csv"
+output_file <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/datasets/Monthly_Ridership.csv"
 
 # export to CSV
 write.csv(aggregated_Ridership_data, file = output_file, row.names = FALSE)
 
 # same for monthly service alerts data
-output_file <- "/Users/christinawright/Documents/Fall 2024 Datasets/Monthly_ServiceAlerts.csv"
+output_file <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/datasets/Monthly_ServiceAlerts.csv"
 
 # export to CSV
 write.csv(aggregated_service_alerts, file = output_file, row.names = FALSE)
@@ -210,7 +211,7 @@ service_alerts_subwaylinetagging <- filtered_service_alerts %>%
   ))
 
 # file path to save CSV
-output_file <- "/Users/christinawright/Documents/Fall 2024 Datasets/ServiceAlerts_AlertLevel_BySubwayLine.csv"
+output_file <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/datasets/ServiceAlerts_AlertLevel_BySubwayLine.csv"
 
 # export to CSV
 write.csv(service_alerts_subwaylinetagging, file = output_file, row.names = FALSE)
@@ -353,19 +354,50 @@ ggplot(monthly_alerts, aes(x = month, y = alert_count, fill = effect_name)) +
 
 ```
 ```{r}
-severity_type <- unique(service_alerts$alert_time_type)
+Alert_type <- unique(service_alerts$alert_time_type)
 
-severity_counts <- service_alerts %>%
-  count(alert_time_type, name = "frequency")
+service_alerts %>%
+  summarize(total_rows = n(),
+            blank_count = sum(alert_time_type == "", na.rm = TRUE),
+            na_count = sum(is.na(alert_time_type)))
 
 
-ggplot(severity_counts, aes(x = severity_type, y = frequency,  fill= severity_type))+
+Alert_counts <- service_alerts %>%
+  mutate(alert_time_type = ifelse(alert_time_type == "", NA, alert_time_type)) %>%
+  count(alert_time_type, name = "frequency", .drop = FALSE)
+
+
+
+ggplot(Alert_counts, aes(x = alert_time_type, y = frequency,  fill= Alert_counts))+
   geom_bar(stat = "Identity", fill = "skyblue", color = "white") +
-  labs( title = "Count of Alert Time Type 2023", x = "Alter Time Type", y = "Count")+
+  labs( title = "Count of Alert Time Type ", x = "Alert Time Type", y = "Count")+
   scale_y_continuous(labels = scales::label_number()) +
   theme_minimal()
-
 ```
+```{r}
 
+#Looking at gui_mode_name column in service alerts. This column shows the frequency of gui_mode_name, which indicates the type of transport the alert is tied to. Buses have the highest number of alerts. We can explore this further and see what type of alerts are tied to buses as well. 
+print(head(service_alerts))
+
+alert_by_mode <- service_alerts %>%
+  count(gui_mode_name, name = "frequency")
+
+ggplot(alert_by_mode, aes(x = gui_mode_name, y = frequency, fill = gui_mode_name)) +
+  geom_bar(stat = "identity", color = "white")+
+  labs( title =" Service Alerts by Transport", x = "Name of Transport", y = "Frequency")+
+  scale_y_continuous(labels = scales::label_number())
+  theme_minimal()
+```
+```{r}
+#exporting 3year Ridership data for tableau
+output_file <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/datasets/Ridership_3yeardata.csv"
+
+write.csv(Ridership_3yeardata, file = output_file, row.names = FALSE)
+
+#also exporting service alert data
+output_file <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/datasets/service_alerts_data.csv"
+
+write.csv(service_alerts, file = output_file, row.names = FALSE)
+```
 ### Exploratory Data Analysis for the Merged Dataset with both Ridership & Service Alerts
 
