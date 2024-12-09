@@ -399,5 +399,38 @@ output_file <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/
 
 write.csv(service_alerts, file = output_file, row.names = FALSE)
 ```
+
+#Created summary data table for subwaylines, looking at the cause code and effect name. Also grouped this data by top 10 subway lines to see what pattern is evident from the type of cause and effect alert name. 
+```{r}
+ subwayline_summarydata <- service_alerts_subwaylinetagging %>%
+  group_by(gui_mode_name,cause_name, cause_code,effect_name,SubwayLine) %>%
+  summarize(Total = n(), .groups = "drop") %>%
+  arrange(desc(Total)) %>%
+  slice_head(n = 10)%>%
+tibble()
+print(subwayline_summarydata)
+
+
+ggplot(subwayline_summarydata, aes(x = SubwayLine, y = Total, fill = cause_name ))+
+  geom_bar(stat = "identity")+
+  labs(title = "Top Alerts by Cause Name and Subway Line",
+       x = "Subway Line",
+       y = "Total Alerts with Cause Name",
+       fill = "Cause Name")+
+  theme_minimal()
+
+table(service_alerts_subwaylinetagging$alert_time_type)
+
+
+grandtotal <- sum(subwayline_summarydata$Total)
+
+sum(monthly_ridership$total_gateentries)
+
+sum(monthly_alerts$alert_count)
+
+count(service_alerts_subwaylinetagging)
+```
+#This summary shows the top 10 subway alert cause and the type of effect.
+
 ### Exploratory Data Analysis for the Merged Dataset with both Ridership & Service Alerts
 
