@@ -34,6 +34,8 @@ So far we have been able to conduct some exploratory data analysis of our riders
 4. Service Alerts and Causes Analysis : https://public.tableau.com/app/profile/brian.sok2425/viz/ServiceAlertsandCauses/ServiceAlertsDash#1
 
 ![Altert Frequency] (DataVisualizations/AlertFrequency.jpeg)
+(DataVisualizations/AlertFrequency.jpeg "Alert Frequency")
+
 ![Cause by Subway Line] (DataVisualizations/Stacked Bar Chart - Totals Cause Name and Subway Line.jpeg)
 
 ### Conclusion
