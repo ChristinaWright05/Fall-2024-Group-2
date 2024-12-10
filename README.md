@@ -33,7 +33,8 @@ So far we have been able to conduct some exploratory data analysis of our riders
 3. Relationships Between Ridership & Alerts: https://public.tableau.com/app/profile/christina.wright4148/viz/MBTARidershipAlertsTableau/RidershipAlertsSeverity?publish=yes
 4. Service Alerts and Causes Analysis : https://public.tableau.com/app/profile/brian.sok2425/viz/ServiceAlertsandCauses/ServiceAlertsDash#1
 
-![Altert Frequency] (Data Visualizations/AlertFrequency.jpg)
+![Altert Frequency] (Data Visualizations/AlertFrequency.jpeg)
+![Cause by Subway Line] (Data Visualizations/Stacked Bar Chart - Totals Cause Name and Subway Line.jpeg)
 
 ### Conclusion
 
