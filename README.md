@@ -51,7 +51,7 @@ Diving deeper into the softness in ridership on the Green line, potentially due 
 #### Deep Dive: Optimal time periods for unavoidable service disruptions
 We understand that sometimes service disruptions are unavoidable - like for regular maintenance or track updates. However, the frequency in which these service alerts have occurred over the past few years, especially during peak ridership times, is likely driving some of the harsh sentiment. Shown below is the frequency of alerts by time of day. Unsurprisingly, peaks in these alerts are coming during prime commuting hours, causing the most noticaeable disruption to commuters.
 
-
+![Alert Frequency by Time of Day](DataVisualizations/FrequencyofAlertsTimeofDay.png)
 
 
 
