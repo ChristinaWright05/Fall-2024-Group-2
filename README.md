@@ -20,6 +20,7 @@ The code for preparing these datasets for analysis is contained in the file Clea
 
 ### Data Analytics
 
+#### Preliminary Analysis: Green Line has suffered the most severe service disruptions over the past 3 years, showing signs of suboptimal ridership
 First, it is important to establish a strong understanding of which MBTA subway line has had the largest shares of ridership, and how each line compares to one another. Shown in the plot below, we can see the Red line is by far the most popular, followed by the orange, green, blue, then silver lines.
 
 ![Ridership by MBTA Line](DataVisualizations/RidershipByTLine.png)
@@ -31,8 +32,16 @@ High-level data suggests that the Green line suffered from the most severe servi
 
 ![Average Severity of Alerts by MBTA Line](DataVisualizations/AvgAlertSeverityByTLine.png)
 
-From a general perspective, we can also see that for subway alerts, delays are by far the most popular as well.
+#### Deep Dive: Service alerts for delays are most disruptive from a volume perspective, while suspensions & shuttles are most severe
+From a general perspective, we can see that for subway alerts, delays are by far the most popular.
 ![Alert Frequency](DataVisualizations/AlertFrequency2.png)
+
+Looking at the average severity by these different alert types, suspensions and shuttle busses fall as the most servere type of service disruption.
+![Severity by Service Alert](DataVisualizations/AvgSeverityCodes.png)
+
+Diving deeper into the softness in ridership on the Green line, potentially due to increased service alerts - we see in the plot below that the Green line shows much higher share of suspensions and shuttle bus service than the overall MBTA (graph above). This explains why the Green line alerts were showing as the most severe. 
+
+![Green Line Service Alerts Over Time](
 
 Additional data exploration can be done in our self-service dashboards, published to Tableau public:
 1. Severity of Alerts by Subway Line: https://public.tableau.com/app/profile/ryan.kantor/viz/AnalysisbySubwayLine/Dashboard1
