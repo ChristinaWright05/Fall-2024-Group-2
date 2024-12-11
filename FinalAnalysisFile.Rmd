@@ -175,6 +175,40 @@ ggplot(T_line_alerts, aes(x = reorder(SubwayLine, -total_alerts), y = total_aler
 
 ```
 
+```{r}
+# aggregate the data bythe T line variable, route_or_line
+T_line_alerts <- ServiceAlertLevelData %>%
+  group_by(SubwayLine) %>%
+  summarize(average_severity = mean(severity_code, na.rm = TRUE))
+
+# plot the sum of alerts by T line
+
+ggplot(T_line_alerts, aes(x = reorder(SubwayLine, -average_severity), y = average_severity, fill = SubwayLine)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = scales::label_number(accuracy = 0.1)(average_severity)), 
+            vjust = -0.5, color = "black") + # format labels in millions
+  scale_fill_manual(
+    values = c(
+      "RED" = "red",
+      "BLUE" = "blue",
+      "GREEN" = "green",
+      "ORANGE" = "orange",
+      "SILVER" = "darkgray"
+    )
+  ) + 
+  labs(
+    title = "Average Alert Severity by MBTA T Line",
+    subtitle = "Service Alerts from 2021-2024",
+    x = "T Line",
+    y = "Average Severity of Service Alerts"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+
+```
+
+
 
 ```{r} 
 # Find the 5 most frequent effect types
