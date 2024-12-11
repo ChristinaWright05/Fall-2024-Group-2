@@ -18,15 +18,11 @@ library(ggplot2)
 library(lubridate)
 ```
 
-Our goals for checkpoint 2 include (1) aligning on cleaned datasets to use & publishing them to git, (2) generate clear insights / continue our EDA, and (3) start forming the outline to our final report.
-
-## From Checkpoint 1:
-
 ### Introduction to our Datasets
 
-Our analysis uses publically available data from the MBTA's Blue Book Open Data Portal (https://mbta-massdot.opendata.arcgis.com). First, we will look at the ridership data - specifically the MBTA historical gate station entries (https://mbta-massdot.opendata.arcgis.com/datasets/7859894afb5641ce91a2bb03599fdf5b/about). Then, we will analyze this against the service alerts (https://mbta-massdot.opendata.arcgis.com/datasets/90ed9092bd7a4285b296d5ff938edf29_0/explore). 
+Our analysis uses publicly available data from the MBTA's Blue Book Open Data Portal (https://mbta-massdot.opendata.arcgis.com). First, we will look at the ridership data - specifically the MBTA historical gate station entries (https://mbta-massdot.opendata.arcgis.com/datasets/7859894afb5641ce91a2bb03599fdf5b/about). Then, we will analyze this against the service alerts (https://mbta-massdot.opendata.arcgis.com/datasets/90ed9092bd7a4285b296d5ff938edf29_0/explore). 
 
-The goal of this analysis will be to find the most impactful service alerts, whether that be type of service issue, particular line of the issue, or circumstances around the issues (i.e. were these unexpected or planned service delays/outages). From there we can provide recommendations to the MBTA on where to focus in the coming year.
+The goal of this analysis is to find the most impactful service alerts, whether that be type of service issue, particular line of the issue, or circumstances around the issues (i.e. were these unexpected or planned service delays/outages). From there we can provide recommendations to the MBTA on where to focus in the coming year.
 
 ### Dataset 1: Ridership Data
 
