@@ -209,7 +209,6 @@ ggplot(T_line_alerts, aes(x = reorder(SubwayLine, -average_severity), y = averag
 ```
 
 
-
 ```{r} 
 # Find the 5 most frequent effect types
 top_effects <- ServiceAlertLevelData %>%
@@ -284,7 +283,45 @@ ggplot(monthly_alerts, aes(x = month, y = alert_count, fill = effect_name)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
+We can also look into the service alert distributions by a particular T line
+```{r}
+service_alerts <- ServiceAlertLevelData %>%
+  filter(SubwayLine == "GREEN") %>%
+  mutate(notif_start = as.Date(notif_start),  # Convert notif_start to Date
+         month = floor_date(notif_start, "month"))  # Extract month for aggregation
 
+# Top Alert Frequency
+top_alert_types <- ServiceAlertLevelData %>%
+  count(effect_name) %>%
+  arrange(desc(n)) %>%
+  slice(1:5) %>%
+  pull(effect_name)
+
+# Only Top Alerts
+filtered_alerts <- service_alerts %>%
+  filter(effect_name %in% top_alert_types)
+
+# Top Alert Count
+monthly_alerts <- filtered_alerts %>%
+  group_by(month, effect_name) %>%
+  summarise(alert_count = n(), .groups = "drop")
+
+# PAST 3 Years
+start_date <- as.Date("2021-01-01")
+monthly_alerts <- monthly_alerts %>% filter(month >= start_date)
+
+#VIZ
+ggplot(monthly_alerts, aes(x = month, y = alert_count, fill = effect_name)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Monthly Frequency of All Top Alert Types (Last 3 Years)",
+       subtitle = "MBTA Green Line Only",
+       x = "Month",
+       y = "Alert Frequency",
+       fill = "Alert Type") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
 
 ```{r}
 Alert_type <- unique(service_alerts$alert_time_type)
