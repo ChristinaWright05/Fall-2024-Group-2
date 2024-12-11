@@ -33,7 +33,7 @@ High-level data suggests that the Green line suffered from the most severe servi
 ![Average Severity of Alerts by MBTA Line](DataVisualizations/AvgAlertSeverityByTLine.png)
 
 #### Deep Dive: Service alerts for delays are most disruptive from a volume perspective, while suspensions & shuttles are most severe
-From a general perspective, we can see that for subway alerts, delays are by far the most popular.
+From a general perspective, we can see that for subway alerts, delays are by far the most popular. The high frequency of delays suggests that focusing on reducing these disruptions could significantly improve rider experience. Other alerts like Detour, Elevator Closure,and Track Change, though less frequent, also impact riders, particularly in accessibility and route consistency.
 
 
 ![Alert Frequency](DataVisualizations/AlertFrequency2.png)
