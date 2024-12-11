@@ -57,8 +57,23 @@ We understand that sometimes service disruptions are unavoidable - like for regu
 
 Additional data exploration can be done in our self-service dashboards, published to Tableau public:
 1. Severity of Alerts by Subway Line: https://public.tableau.com/app/profile/ryan.kantor/viz/AnalysisbySubwayLine/Dashboard1
+
+  
 2. Frequency of Alerts & Location Analysis: https://public.tableau.com/app/profile/angelo.nicolosi/viz/LocationTimeAnalysis/Dashboard1
+Understanding patterns in service alerts is essential for identifying areas of improvement in transit operations. 
+These visualizations provide valuable insights into when, where, and why alerts occur, enabling transit authorities to prioritize resources effectively. 
+By examining the frequency of alerts across different times of the day, locations, and causes, we can see trends that impact reliability 
+and overall passenger experience.
+
+These visualizations focus on the distribution of alerts by time of day, location, and primary causes. 
+The bar chart highlights that alert frequency peaks during commuting hours, with the highest counts observed between 7–9 AM and 4–6 PM, suggesting a strong correlation with rush hour traffic.
+The treemap identifies the most affected locations, with delays most frequently reported on the Newburyport/Rockport, Fitchburg, and Framingham/Worcester lines. 
+Lastly, the table categorizes the major causes of alerts, showing that "Unknown Causes" and "Technical Problems" dominate delays, while "Construction" significantly impacts detours. 
+This analysis helps to highlight the importance of addressing infrastructure and operational challenges to improve service reliability during peak hours and on critical transit lines.
+   
 3. Relationships Between Ridership & Alerts: https://public.tableau.com/app/profile/christina.wright4148/viz/MBTARidershipAlertsTableau/RidershipAlertsSeverity?publish=yes
+
+   
 4. Service Alerts and Causes Analysis : https://public.tableau.com/app/profile/brian.sok2425/viz/ServiceAlertsandCauses/ServiceAlertsDash#1
 
 
