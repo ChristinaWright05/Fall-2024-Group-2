@@ -58,6 +58,10 @@ We understand that sometimes service disruptions are unavoidable - like for regu
 Additional data exploration can be done in our self-service dashboards, published to Tableau public:
 1. Severity of Alerts by Subway Line: https://public.tableau.com/app/profile/ryan.kantor/viz/AnalysisbySubwayLine/Dashboard1
 
+This dashboard provides an analysis with a focus on the subway lines. From this analysis, the MBTA can get an indication of which subway lines operate the best.
+From this analysis, the red and green subway lines have the highest distinct alert counts. The orange and blue lines have less distinct alert counts.
+However, as indicated by the scatterplot, the red subway line also tends to have the highest amount of totat gated entries. The high amount of distinct alert counts may be in part due to being more utilized. 
+The green line tends to have fewer total gated entries than the yellow line while having a higher distinct alert ccount, indicating this line should be a focus for the MBTA.
   
 2. Frequency of Alerts & Location Analysis: https://public.tableau.com/app/profile/angelo.nicolosi/viz/LocationTimeAnalysis/Dashboard1
 
