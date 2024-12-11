@@ -20,9 +20,14 @@ The code for preparing these datasets for analysis is contained in the file Clea
 
 ### Data Analytics
 
-First, it is important to establish a strong understanding of which MBTA subway line has had the largest shares of ridership, and how each line compares to one another. Shown in the plot below, we can see the Red line is by far the most popular.
+First, it is important to establish a strong understanding of which MBTA subway line has had the largest shares of ridership, and how each line compares to one another. Shown in the plot below, we can see the Red line is by far the most popular, followed by the orange, green, blue, then silver lines.
 
 ![Ridership by MBTA Line](DataVisualizations/RidershipByTLine.png)
+
+When we consider the same time period, but instead look at the total number of service alerts by T line - there is an interesting shift in ranking between the Orange and Green lines. While the Red line remains most popular for ridership despite the highest number of alerts, we see that the Green line comes in second for most alerts. However, in the previous plot, it is notable that the Green line is well behind the Orange line for ridership.
+![Alerts by MBTA Line](DataVisualizations/ServiceAlertsTLine.png)
+
+
 
 From a general perspective, we can also see that for subway alerts, delays are by far the most popular as well.
 ![Alert Frequency](DataVisualizations/AlertFrequency2.png)
