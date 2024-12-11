@@ -36,12 +36,12 @@ High-level data suggests that the Green line suffered from the most severe servi
 From a general perspective, we can see that for subway alerts, delays are by far the most popular.
 ![Alert Frequency](DataVisualizations/AlertFrequency2.png)
 
-Looking at the average severity by these different alert types, suspensions and shuttle busses fall as the most servere type of service disruption.
+Looking at the average severity by these different alert types, suspensions and replacing the T with shuttle busses fall as the most servere type of service disruption.
 ![Severity by Service Alert](DataVisualizations/AvgSeverityCodes.png)
 
 Diving deeper into the softness in ridership on the Green line, potentially due to increased service alerts - we see in the plot below that the Green line shows much higher share of suspensions and shuttle bus service than the overall MBTA (graph above). This explains why the Green line alerts were showing as the most severe. 
 
-![Green Line Service Alerts Over Time](
+![Green Line Service Alerts Over Time](DataVisualizations/GreenLineServiceAlertsMonthly.png)
 
 Additional data exploration can be done in our self-service dashboards, published to Tableau public:
 1. Severity of Alerts by Subway Line: https://public.tableau.com/app/profile/ryan.kantor/viz/AnalysisbySubwayLine/Dashboard1
