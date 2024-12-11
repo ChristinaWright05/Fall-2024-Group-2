@@ -35,10 +35,6 @@ So far we have been able to conduct some exploratory data analysis of our riders
 
 ![Alert Frequency](DataVisualizations/AlertFrequency2.png)
 
-(DataVisualizations/AlertFrequency2.png "Alert Frequency")
-
-![Cause by Subway Line] (DataVisualizations/Stacked Bar Chart - Totals Cause Name and Subway Line.jpeg)
-
 ### Conclusion
 
  Our team looked at multiple levels of data from 2021 to 2023.  We have identified four trends or patterns occurring from the MBTA data. First, ridership is trending slightly upwards for the green and blue lines, while the blue line has the lowest amount of alerts occurring during this time period. The second pattern we have identified is many service alerts have been occurring during prime rush hour commutes, mainly 6am to 8am and 3pm to 5pm. Alerts from these two time frames represented 44.65% of all service alerts examined during the selected time period. We have also identified which type of cause code has the highest count for the subway lines. The Red, Orange and Green lines had the most service alerts and the most frequent cause of these alerts were technical problems, which resulted in delays for the customer. The MBTA has identified the cause of the technical problems, mainly disabled trains. The data does not go into further detail about why the subway trains are disabled, but this service alert type is most common in the red, orange and green lines. Lastly, one time alerts made up the majority of the service alerts with 3217 alerts and 95 recurring alerts. 
