@@ -27,7 +27,9 @@ First, it is important to establish a strong understanding of which MBTA subway 
 When we consider the same time period, but instead look at the total number of service alerts by T line - there is an interesting shift in ranking between the Orange and Green lines. While the Red line remains most popular for ridership despite the highest number of alerts, we see that the Green line comes in second for most alerts. However, in the previous plot, it is notable that the Green line is well behind the Orange line for ridership.
 ![Alerts by MBTA Line](DataVisualizations/ServiceAlertsTLine.png)
 
+High-level data suggests that the Green line suffered from the most severe service alerts over this time period. When looking at the average severity of the alerts, logged on a scale of 1-10, where highest score equates to being most severe - the Green line takes the first position.
 
+![Average Severity of Alerts by MBTA Line](DataVisualizations/AvgAlertSeverityByTLine.png)
 
 From a general perspective, we can also see that for subway alerts, delays are by far the most popular as well.
 ![Alert Frequency](DataVisualizations/AlertFrequency2.png)
