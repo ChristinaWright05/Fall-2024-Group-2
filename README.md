@@ -60,6 +60,7 @@ Additional data exploration can be done in our self-service dashboards, publishe
 
   
 2. Frequency of Alerts & Location Analysis: https://public.tableau.com/app/profile/angelo.nicolosi/viz/LocationTimeAnalysis/Dashboard1
+
 Understanding patterns in service alerts is essential for identifying areas of improvement in transit operations. 
 These visualizations provide valuable insights into when, where, and why alerts occur, enabling transit authorities to prioritize resources effectively. 
 By examining the frequency of alerts across different times of the day, locations, and causes, we can see trends that impact reliability 
