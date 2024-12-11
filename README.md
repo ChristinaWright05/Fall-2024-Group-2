@@ -77,6 +77,8 @@ This analysis helps to highlight the importance of addressing infrastructure and
    
 4. Service Alerts and Causes Analysis : https://public.tableau.com/app/profile/brian.sok2425/viz/ServiceAlertsandCauses/ServiceAlertsDash#1
 
+This dashboard dives a little deeper into the service alert data. It identifies what type of transportation mode received the most alerts and examines the cause code category more. Its important to look closer at the causes of the alerts because this will help the MBTA identify a pattern if there is one with causes. Additionally, this dashboard shows a heat map of alert severity. Most alerts will be related to some type of alert that will last up to 20 minutes or more.
+
 
 We used R and Tableau for our analysis. R was useful to clean and aggregate our data, as well as creating some initial visualizations that allowed for a sense of the data we were working with. We were able to perform an exploratory data analysis and better understand the data that the MBTA provided. The challenge with R was customizing our graphs. Customizing graphs was more involved as it required packages and was not as flexible as other tools. Tableau was then used to create and present interactive visualizations. Tableau provided the advantage of allowing for the creation of a more user-friendly informative visualization. Parameters can be adjusted and the graphs can be made to be more visually appealing. The challenge with Tableau was effectively combining our different data sources and the variables in different datasets to create informative visualizations. 
 
