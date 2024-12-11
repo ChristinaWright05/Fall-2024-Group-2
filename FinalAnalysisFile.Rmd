@@ -137,72 +137,70 @@ ggplot(T_line_ridership, aes(x = reorder(SubwayLine, -total_gateentries), y = to
 
 ```
 
-We can also see how ridership may have changed over time
-```{r}
-# adding in a 'month' column based off the service_date
-Ridership_3yeardata <- Ridership_3yeardata %>%
-  mutate(month = floor_date(service_date, "month")) 
-
-# agreagte the data by month
-monthly_ridership <- Ridership_3yeardata %>%
-  group_by(month) %>%
-  summarize(total_gateentries = sum(gated_entries, na.rm = TRUE))
-
-# plotting the total ridership over time by month
-ggplot(monthly_ridership, aes(x = month, y = total_gateentries)) +
-  geom_line(color = "blue", size = 1) +
-  scale_x_date(
-    date_labels = "%b %Y",  # month year x-axis labels
-    date_breaks = "1 month" # adding month grid lines for readability
-  ) +
-  labs(
-    title = "Monthly Total Ridership Over Time",
-    x = "Month",
-    y = "Total Gated Entries"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
-
-```
 
 ### Exploratory Data Analysis for Service Alerts Data
 
 Within this section, we have plotted frequency of alerts of alert type, along with the severity of these alerts, and the duration of them.
 
+```{r}
+# aggregate the data bythe T line variable, route_or_line
+T_line_alerts <- MonthlyServiceAlertLevelData %>%
+  group_by(SubwayLine) %>%
+  summarize(total_alerts = sum(distinct_alert_count, na.rm = TRUE))
+
+# plot the sum of alerts by T line
+
+ggplot(T_line_alerts, aes(x = reorder(SubwayLine, -total_alerts), y = total_alerts, fill = SubwayLine)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = scales::label_number(scale = 1e-3, accuracy = 0.1)(total_alerts)), 
+            vjust = -0.5, color = "black") + # format labels in millions
+  scale_fill_manual(
+    values = c(
+      "RED" = "red",
+      "BLUE" = "blue",
+      "GREEN" = "green",
+      "ORANGE" = "orange",
+      "SILVER" = "darkgray"
+    )
+  ) + 
+  labs(
+    title = "Total Service Alerts by MBTA T Line (thousands)",
+    subtitle = "Service Alerts from 2021-2024",
+    x = "T Line",
+    y = "Total Service Alerts"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+
+```
+
 
 ```{r} 
 # Find the 5 most frequent effect types
-top_effects <- service_alerts %>%
+top_effects <- ServiceAlertLevelData %>%
   count(effect_name) %>%
   top_n(5, wt = n) %>%
   pull(effect_name)
 
 # Calculate the average severity code for all top 5 effects
-top_effects_data <- subset(service_alerts, effect_name %in% top_effects)
+top_effects_data <- subset(ServiceAlertLevelData, effect_name %in% top_effects)
 
 # Group and calculate the average severity code
 average_severity <- top_effects_data %>%
   group_by(effect_name) %>%
   summarise(average_severity = mean(severity_code, na.rm = TRUE))
 
-print(average_severity)
-```
-
-Visualizing this data
-```{r}
-# Data for visualization
-effect_data <- data.frame(
-  Effect_Name = c("Detour", "Delay", "Escalator Closure", "Elevator Closure", "Track Change"),
-  Severity_Code = c(6.33, 4.97, 2.99, 2.97, 1.65)
-)
-
-# Create the bar chart
-ggplot(effect_data, aes(x = reorder(Effect_Name, -Severity_Code), y = Severity_Code, fill = Effect_Name)) +
+ggplot(average_severity, aes(x = reorder(effect_name, -average_severity), y = average_severity, fill = effect_name)) +
   geom_bar(stat = "identity") +
-  labs(title = "Top 5 Effect Names and Their Severity Code",
-       x = "Effect Name",
-       y = "Average Severity Code") +
-  theme_minimal()
+  labs(
+    title = "Average Severity Code for Top 5 Effect Types",
+    x = "Effect Type",
+    y = "Average Severity Code"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  geom_text(aes(label = round(average_severity, 2)), vjust = -0.5, color = "black") # Add labels
 ```
 
 This next chart shows that Delay alerts are by far the most frequent, 
@@ -217,12 +215,12 @@ coming year, targeted efforts on reducing delays, enhancing communication, and
 ensuring accessibility would likely yield the most positive impacts for riders.
 
 ```{r}
-service_alerts <- service_alerts %>%
+service_alerts <- ServiceAlertLevelData %>%
   mutate(notif_start = as.Date(notif_start),  # Convert notif_start to Date
          month = floor_date(notif_start, "month"))  # Extract month for aggregation
 
 # Top Alert Frequency
-top_alert_types <- service_alerts %>%
+top_alert_types <- ServiceAlertLevelData %>%
   count(effect_name) %>%
   arrange(desc(n)) %>%
   slice(1:5) %>%
@@ -252,6 +250,8 @@ ggplot(monthly_alerts, aes(x = month, y = alert_count, fill = effect_name)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
+
+
 ```{r}
 Alert_type <- unique(service_alerts$alert_time_type)
 
@@ -287,17 +287,7 @@ ggplot(alert_by_mode, aes(x = gui_mode_name, y = frequency, fill = gui_mode_name
   scale_y_continuous(labels = scales::label_number())
   theme_minimal()
 ```
-```{r}
-#exporting 3year Ridership data for tableau
-output_file <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/datasets/Ridership_3yeardata.csv"
 
-write.csv(Ridership_3yeardata, file = output_file, row.names = FALSE)
-
-#also exporting service alert data
-output_file <- "C:/Users/Brian/OneDrive/Desktop/MSAE/Software for Data Analysis/Group Project MBTA/datasets/service_alerts_data.csv"
-
-write.csv(service_alerts, file = output_file, row.names = FALSE)
-```
 
 #Created summary data table for subwaylines, looking at the cause code and effect name. Also grouped this data by top 10 subway lines to see what pattern is evident from the type of cause and effect alert name. 
 ```{r}
