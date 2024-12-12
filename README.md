@@ -78,8 +78,10 @@ This analysis helps to highlight the importance of addressing infrastructure and
    
 3. Relationships Between Ridership & Alerts: https://public.tableau.com/app/profile/christina.wright4148/viz/MBTARidershipAlertsTableau/RidershipAlertsSeverity?publish=yes
 
+Within this dashboard, MBTA analysts can quickly check in on ridership trends over time by MBTA T line and how that correlates with the frequency of alerts on a monthly level. If they would like to dive into one line in particular, and view how the serverity changes on a monthly basis with the alert frequency, they can also look at that in the same view. By filtering the plot one the right to the green line, you can see that the severity of alerts has been increasing month over month.
+
    
-4. Service Alerts and Causes Analysis : https://public.tableau.com/app/profile/brian.sok2425/viz/ServiceAlertsandCauses/ServiceAlertsDash#1
+5. Service Alerts and Causes Analysis : https://public.tableau.com/app/profile/brian.sok2425/viz/ServiceAlertsandCauses/ServiceAlertsDash#1
 
 This dashboard dives a little deeper into the service alert data. It identifies what type of transportation mode received the most alerts and examines the cause code category more. Its important to look closer at the causes of the alerts because this will help the MBTA identify a pattern if there is one with causes. Additionally, this dashboard shows a heat map of alert severity. Most alerts will be related to some type of alert that will last up to 20 minutes or more.
 
